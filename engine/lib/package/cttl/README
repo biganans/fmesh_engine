@@ -1,0 +1,38 @@
+Common Text Transformation Library
+Version 3.02
+http://cttl.sourceforge.net/
+
+Dec 6 2012
+
+
+Welcome!
+
+
+The directory structure of CTTL distribution is as follows:
+
+cttl/......C++ header files for substrings and lexical analysis components
+lambda/....lambda library C++ header files
+utils/.....auxiliary C++ header files used by sample programs
+example/...sample programs
+
+
+Source file main.cpp in the top directory is a copy of example/arithmetics.cpp.
+The library does not require any specific compiler switches or settings.
+With GNU compiler, your should be able to compile it right away like this:
+
+$ g++ main.cpp
+
+
+To compile sample programs, execute commands
+
+$ cd example
+$ make
+
+
+If you are new to CTTL library, start here: http://cttl.sourceforge.net/
+Thanks for downloading!
+Enjoy,
+
+_igor
+Igor Kholodov
+cttl@users.sourceforge.net

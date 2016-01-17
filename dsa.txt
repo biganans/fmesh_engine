@@ -1,0 +1,354 @@
+void CreateTransformFeedbacks(sizei n, uint *ids);
+
+void TransformFeedbackBufferBase(uint xfb, uint index,
+                                 uint buffer);
+
+void TransformFeedbackBufferRange(uint xfb, uint index,
+                                  uint buffer, intptr offset, sizeiptr size);
+
+void GetTransformFeedbackiv(uint xfb, enum pname, int *param);
+
+void GetTransformFeedbacki_v(uint xfb, enum pname, uint index,
+                             int *param);
+
+void GetTransformFeedbacki64_v(uint xfb, enum pname, uint index,
+                               int64 *param);
+
+void CreateBuffers(sizei n, uint *buffers);
+
+void NamedBufferStorage(uint buffer,
+                        sizeiptr size,
+                        const void *data,
+                        bitfield flags);
+
+void NamedBufferData(uint buffer,
+                     sizeiptr size,
+                     const void *data,
+                     enum usage);
+
+void NamedBufferSubData(uint buffer,
+                        intptr offset, sizeiptr size,
+                        const void *data);
+
+void CopyNamedBufferSubData(uint readBuffer, uint writeBuffer,
+                            intptr readOffset, intptr writeOffset,
+                            sizeiptr size);
+
+void ClearNamedBufferData(uint buffer,
+                          enum internalformat,
+                          enum format,
+                          enum type,
+                          const void *data);
+
+void ClearNamedBufferSubData(uint buffer,
+                             enum internalformat,
+                             intptr offset,
+                             sizeiptr size,
+                             enum format,
+                             enum type,
+                             const void *data);
+
+void *MapNamedBuffer(uint buffer, enum access);
+
+void *MapNamedBufferRange(uint buffer,
+                          intptr offset, sizeiptr length,
+                          bitfield access);
+
+boolean UnmapNamedBuffer(uint buffer);
+
+void FlushMappedNamedBufferRange(uint buffer, intptr offset,
+                                 sizeiptr length);
+
+void GetNamedBufferParameteriv(uint buffer,
+                               enum pname, int *params);
+
+void GetNamedBufferParameteri64v(uint buffer,
+                                 enum pname, int64 *params);
+
+void GetNamedBufferPointerv(uint buffer,
+                            enum pname, void **params);
+
+void GetNamedBufferSubData(uint buffer,
+                           intptr offset, sizeiptr size, void *data);
+
+void CreateFramebuffers(sizei n, uint *framebuffers);
+
+void NamedFramebufferRenderbuffer(uint framebuffer,
+                                  enum attachment,
+                                  enum renderbuffertarget,
+                                  uint renderbuffer);
+
+void NamedFramebufferParameteri(uint framebuffer,
+                                enum pname,
+                                int param);
+
+void NamedFramebufferTexture(uint framebuffer,
+                             enum attachment,
+                             uint texture, int level);
+
+void NamedFramebufferTextureLayer(uint framebuffer,
+                                  enum attachment,
+                                  uint texture, int level, int layer);
+
+void NamedFramebufferDrawBuffer(uint framebuffer, enum mode);
+
+void NamedFramebufferDrawBuffers(uint framebuffer, sizei n,
+                                 const enum *bufs);
+
+void NamedFramebufferReadBuffer(uint framebuffer, enum mode);
+
+void InvalidateNamedFramebufferData(uint framebuffer,
+                                    sizei numAttachments,
+                                    const enum *attachments);
+
+void InvalidateNamedFramebufferSubData(uint framebuffer,
+                                       sizei numAttachments,
+                                       const enum *attachments,
+                                       int x, int y,
+                                       sizei width, sizei height);
+
+void ClearNamedFramebufferiv(uint framebuffer, enum buffer,
+                             int drawbuffer, const int *value);
+
+void ClearNamedFramebufferuiv(uint framebuffer, enum buffer,
+                              int drawbuffer, const uint *value);
+
+void ClearNamedFramebufferfv(uint framebuffer, enum buffer,
+                             int drawbuffer, const float *value);
+
+void ClearNamedFramebufferfi(uint framebuffer, enum buffer,
+                             float depth, int stencil);
+
+void BlitNamedFramebuffer(uint readFramebuffer,
+                          uint drawFramebuffer,
+                          int srcX0,
+                          int srcY0,
+                          int srcX1,
+                          int srcY1,
+                          int dstX0,
+                          int dstY0,
+                          int dstX1,
+                          int dstY1,
+                          bitfield mask,
+                          enum filter);
+
+enum CheckNamedFramebufferStatus(uint framebuffer, enum target);
+
+void GetNamedFramebufferParameteriv(uint framebuffer,
+                                    enum pname,
+                                    int *param);
+
+void GetNamedFramebufferAttachmentParameteriv(uint framebuffer,
+                                              enum attachment,
+                                              enum pname,
+                                              int *params);
+
+void CreateRenderbuffers(sizei n, uint *renderbuffers);
+
+void NamedRenderbufferStorage(uint renderbuffer,
+                              enum internalformat,
+                              sizei width, sizei height);
+
+void NamedRenderbufferStorageMultisample(uint renderbuffer,
+                                         sizei samples,
+                                         enum internalformat,
+                                         sizei width, sizei height);
+
+void GetNamedRenderbufferParameteriv(uint renderbuffer,
+                                     enum pname, int *params);
+
+void CreateTextures(enum target, sizei n, uint *textures);
+
+void TextureBuffer(uint texture,
+                   enum internalformat, uint buffer);
+
+void TextureBufferRange(uint texture,
+                        enum internalformat, uint buffer,
+                        intptr offset, sizeiptr size);
+
+void TextureStorage1D(uint texture, sizei levels,
+                      enum internalformat,
+                      sizei width);
+
+void TextureStorage2D(uint texture, sizei levels,
+                      enum internalformat,
+                      sizei width, sizei height);
+
+void TextureStorage3D(uint texture, sizei levels,
+                      enum internalformat,
+                      sizei width, sizei height, sizei depth);
+
+void TextureStorage2DMultisample(uint texture, sizei samples,
+                                 enum internalformat, sizei width,
+                                 sizei height,
+                                 boolean fixedsamplelocations);
+
+void TextureStorage3DMultisample(uint texture, sizei samples,
+                                 enum internalformat, sizei width,
+                                 sizei height, sizei depth,
+                                 boolean fixedsamplelocations);
+
+void TextureSubImage1D(uint texture, int level,
+                       int xoffset, sizei width,
+                       enum format, enum type,
+                       const void *pixels);
+
+void TextureSubImage2D(uint texture, int level,
+                       int xoffset, int yoffset,
+                       sizei width, sizei height,
+                       enum format, enum type,
+                       const void *pixels);
+
+void TextureSubImage3D(uint texture, int level,
+                       int xoffset, int yoffset, int zoffset,
+                       sizei width, sizei height, sizei depth,
+                       enum format, enum type,
+                       const void *pixels);
+
+void CompressedTextureSubImage1D(uint texture, int level,
+                                 int xoffset,
+                                 sizei width,
+                                 enum format,
+                                 sizei imageSize, const void *data);
+
+void CompressedTextureSubImage2D(uint texture, int level,
+                                 int xoffset, int yoffset,
+                                 sizei width, sizei height,
+                                 enum format,
+                                 sizei imageSize, const void *data);
+
+void CompressedTextureSubImage3D(uint texture, int level,
+                                 int xoffset, int yoffset, int zoffset,
+                                 sizei width, sizei height, sizei depth,
+                                 enum format,
+                                 sizei imageSize, const void *data);
+
+void CopyTextureSubImage1D(uint texture,
+                           int level,
+                           int xoffset,
+                           int x, int y,
+                           sizei width);
+
+void CopyTextureSubImage2D(uint texture,
+                           int level,
+                           int xoffset, int yoffset,
+                           int x, int y,
+                           sizei width, sizei height);
+
+void CopyTextureSubImage3D(uint texture,
+                           int level,
+                           int xoffset, int yoffset, int zoffset,
+                           int x, int y,
+                           sizei width, sizei height);
+
+void TextureParameterf(uint texture,
+                       enum pname, float param);
+
+void TextureParameterfv(uint texture,
+                        enum pname, const float *param);
+
+void TextureParameteri(uint texture,
+                       enum pname, int param);
+
+void TextureParameterIiv(uint texture,
+                         enum pname, const int *params);
+
+void TextureParameterIuiv(uint texture,
+                          enum pname, const uint *params);
+
+void TextureParameteriv(uint texture,
+                        enum pname, const int *param);
+
+void GenerateTextureMipmap(uint texture);
+
+void BindTextureUnit(uint unit, uint texture);
+
+void GetTextureImage(uint texture, int level,
+                     enum format, enum type,
+                     sizei bufSize,
+                     void *pixels);
+
+void GetCompressedTextureImage(uint texture, int level,
+                               sizei bufSize,
+                               void *pixels);
+
+void GetTextureLevelParameterfv(uint texture,
+                                int level,
+                                enum pname, float *params);
+
+void GetTextureLevelParameteriv(uint texture,
+                                int level,
+                                enum pname, int *params);
+
+void GetTextureParameterfv(uint texture,
+                           enum pname, float *params);
+
+void GetTextureParameterIiv(uint texture,
+                            enum pname, int *params);
+
+void GetTextureParameterIuiv(uint texture,
+                             enum pname, uint *params);
+
+void GetTextureParameteriv(uint texture,
+                           enum pname, int *params);
+
+void CreateVertexArrays(sizei n, uint *arrays);
+
+void DisableVertexArrayAttrib(uint vaobj, uint index);
+
+void EnableVertexArrayAttrib(uint vaobj, uint index);
+
+void VertexArrayElementBuffer(uint vaobj, uint buffer);
+
+void VertexArrayVertexBuffer(uint vaobj, uint bindingindex, uint buffer,
+                             intptr offset, sizei stride);
+
+void VertexArrayVertexBuffers(uint vaobj, uint first, sizei count,
+                              const uint *buffers,
+                              const intptr *offsets,
+                              const sizei *strides);
+
+void VertexArrayAttribFormat(uint vaobj, uint attribindex, int size,
+                             enum type, boolean normalized,
+                             uint relativeoffset);
+
+void VertexArrayAttribIFormat(uint vaobj, uint attribindex, int size,
+                              enum type, uint relativeoffset);
+
+void VertexArrayAttribLFormat(uint vaobj, uint attribindex, int size,
+                              enum type, uint relativeoffset);
+
+void VertexArrayAttribBinding(uint vaobj, uint attribindex,
+                              uint bindingindex);
+
+void VertexArrayBindingDivisor(uint vaobj, uint bindingindex,
+                               uint divisor);
+
+void GetVertexArrayiv(uint vaobj,
+                      enum pname,
+                      int *param);
+
+void GetVertexArrayIndexediv(uint vaobj,
+                             uint index,
+                             enum pname,
+                             int *param);
+
+void GetVertexArrayIndexed64iv(uint vaobj,
+                               uint index,
+                               enum pname,
+                               int64 *param);
+
+
+void CreateSamplers(sizei n, uint *samplers);
+
+
+void CreateProgramPipelines(sizei n, uint *pipelines);
+void CreateQueries(enum target, sizei n, uint *ids);
+void GetQueryBufferObjectiv(uint id, uint buffer, enum pname,
+                            intptr offset);
+void GetQueryBufferObjectuiv(uint id, uint buffer, enum pname,
+                             intptr offset);
+void GetQueryBufferObjecti64v(uint id, uint buffer, enum pname,
+                              intptr offset);
+void GetQueryBufferObjectui64v(uint id, uint buffer, enum pname,
+                               intptr offset);

@@ -1,0 +1,203 @@
+
+struct directional_light {
+    vec3 color;
+    vec3 direction;
+    float ambient_intensity;
+    float diffuse_intensity;
+    float specular_intensity;
+    float specular_power;
+};
+
+
+float calc_diffuse_factor(vec3 direction, vec3 normal)
+{
+    return max(dot(normal, -direction), 0);
+}
+
+vec4 calc_diffuse_color(vec3 color, float intensity, float factor)
+{
+    vec4 diffuse_color = vec4(0.0);
+    if (factor > 0) {
+        diffuse_color = vec4(color, 1.0) * intensity * factor;
+    }
+    return diffuse_color;
+}
+
+
+vec4 calc_specular_color(directional_light dl,
+                         vec3 normal,
+                         vec3 v,
+                         vec3 eye)
+{
+    vec4 specular_color = vec4(0.0);
+    vec3 vertex_to_eye = normalize((eye - v));
+
+//    vec3 half_vec = normalize(vertex_to_eye + (-dl.direction));
+//    float specular_factor = max(0, dot(vertex_to_eye, half_vec));
+    vec3 r = normalize(reflect(dl.direction, normal));
+    float specular_factor = max(0, dot(vertex_to_eye, r));
+    specular_factor = pow(specular_factor, dl.specular_power);
+    if (specular_factor > 0) {
+        specular_color = vec4(dl.color, 1.0) * dl.specular_intensity * specular_factor;
+    }
+
+    return specular_color;
+}
+
+
+vec4 calc_directional_light(directional_light dl, vec3 normal, vec3 v, vec3 eye)
+{
+    vec4 ambient_color = vec4(dl.color, 1.0) * dl.ambient_intensity;
+    vec4 diffuse_color = vec4(0.0);
+    vec4 specular_color = vec4(0.0);
+    float diffuse_factor = calc_diffuse_factor(dl.direction, normal);
+    if (diffuse_factor > 0) {
+        diffuse_color = calc_diffuse_color(dl.color,
+                                           dl.diffuse_intensity,
+                                           diffuse_factor);
+
+        specular_color = calc_specular_color(dl, normal, v, eye);
+    }
+
+    return ambient_color + diffuse_color + specular_color;
+}
+
+
+
+vec4 calc_directional_shadow_light(directional_light dl,
+                                   vec3 normal,
+                                   vec3 v,
+                                   vec3 eye,
+                                   float visibility)
+{
+    vec4 ambient_color = vec4(dl.color, 1.0) * dl.ambient_intensity;
+    vec4 diffuse_color = vec4(0.0);
+    vec4 specular_color = vec4(0.0);
+    float diffuse_factor = calc_diffuse_factor(dl.direction, normal);
+    if (diffuse_factor > 0) {
+        diffuse_color = calc_diffuse_color(dl.color,
+                                           dl.diffuse_intensity,
+                                           diffuse_factor);
+
+        specular_color = calc_specular_color(dl, normal, v, eye);
+    }
+
+    return ambient_color + diffuse_color * visibility + specular_color * visibility;
+}
+
+/*
+const int MAX_POINT_LIGHTS = 2;
+const int MAX_SPOT_LIGHTS = 2;
+
+struct BaseLight
+{
+    vec3 Color;
+    float AmbientIntensity;
+    float DiffuseIntensity;
+};
+
+struct DirectionalLight
+{
+    BaseLight Base;
+    vec3 Direction;
+};
+
+struct Attenuation
+{
+    float Constant;
+    float Linear;
+    float Exp;
+};
+
+struct PointLight
+{
+    BaseLight Base;
+    vec3 Position;
+    Attenuation Atten;
+};
+
+struct SpotLight
+{
+    PointLight Base;
+    vec3 Direction;
+    float Cutoff;
+};
+
+uniform int gNumPointLights;
+uniform int gNumSpotLights;
+uniform DirectionalLight gDirectionalLight;
+uniform PointLight gPointLights[MAX_POINT_LIGHTS];
+uniform SpotLight gSpotLights[MAX_SPOT_LIGHTS];
+uniform float gMatSpecularIntensity;
+uniform float gSpecularPower;
+
+vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal, vec3 Eye, vec3 Vertex)
+{
+    vec4 AmbientColor = vec4(Light.Color, 1.0f) * Light.AmbientIntensity;
+    float DiffuseFactor = dot(Normal, -LightDirection);
+
+    vec4 DiffuseColor  = vec4(0, 0, 0, 0);
+    vec4 SpecularColor = vec4(0, 0, 0, 0);
+
+    if (DiffuseFactor > 0) {
+        DiffuseColor = vec4(Light.Color, 1.0f) * Light.DiffuseIntensity * DiffuseFactor;
+
+        vec3 VertexToEye = normalize(Eye - Vertex);
+        vec3 LightReflect = normalize(reflect(LightDirection, Normal));
+        float SpecularFactor = dot(VertexToEye, LightReflect);
+        SpecularFactor = pow(SpecularFactor, gSpecularPower);
+        if (SpecularFactor > 0) {
+            SpecularColor = vec4(Light.Color, 1.0f) *
+                            gMatSpecularIntensity * SpecularFactor;
+        }
+    }
+    return (AmbientColor + DiffuseColor + SpecularColor);
+}
+
+vec4 CalcDirectionalLight(vec3 Normal, vec3 Eye, vec3 Vertex)
+{
+    return CalcLightInternal(gDirectionalLight.Base,
+                             gDirectionalLight.Direction,
+                             Normal, Eye, Vertex);
+}
+
+vec4 CalcPointLight(PointLight l, vec3 Normal, vec3 Vertex)
+{
+    vec3 LightDirection = Vertex - l.Position;
+    float Distance = length(LightDirection);
+    LightDirection = normalize(LightDirection);
+    vec4 Color = CalcLightInternal(l.Base, LightDirection, Normal);
+    float Attenuation =  l.Atten.Constant +
+                         l.Atten.Linear * Distance +
+                         l.Atten.Exp * Distance * Distance;
+    return Color / Attenuation;
+}
+
+vec4 CalcSpotLight(SpotLight l, vec3 Normal, vec3 Vertex)
+{
+    vec3 LightToPixel = normalize(Vertex - l.Base.Position);
+    float SpotFactor = dot(LightToPixel, l.Direction);
+    if (SpotFactor > l.Cutoff) {
+        vec4 Color = CalcPointLight(l.Base, Normal);
+        return Color * (1.0 - (1.0 - SpotFactor) * 1.0/(1.0 - l.Cutoff));
+    } else {
+        return vec4(0,0,0,0);
+    }
+}
+
+vec4 CalcPhongLight(vec3 normal, vec3 eye, vec3 vertex)
+{
+    vec3 n = normalize(normal);
+    vec4 light = CalcDirectionalLight(n, eye, vertex);
+
+    for (int i = 0; i < gNumPointLights; ++i) {
+        light += CalcPointLight(gPointLights[i], n, vertex);
+    }
+
+    for (int i = 0; i < gNumSpotLights; ++i) {
+        light += CalcSpotLight(gSpotLights[i], n, vertex);
+    }
+
+    return light;
+}
+*/

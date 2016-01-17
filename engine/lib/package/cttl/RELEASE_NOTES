@@ -1,0 +1,62 @@
+Common Text Transformation Library
+
+Version 3.02
+Dec 6 2012
+
+Release Notes
+
+----------
+BUG FIXES
+----------
+Compatibility issues with MSVC++2010 and GCC-4.7.2 got resolved.
+Only a few minor changes. CTTL version 3.02 is fully tested with
+
+g++ (GCC) (Ubuntu/Linaro 4.7.2-2ubuntu1) 4.7.2 (64 bit)
+g++ (GCC) 4.6.1 (MinGW-3.20 32 bit)
+g++ (GCC) 4.3.0 20080305 (alpha-testing) mingw-20080502
+MSVC 2010 Version 16.00.40219.01 for 80x86 (32 bit)
+MSVC 8.0 Version 14.00.50727.762 (2005)
+MSVC 7.1 Version 13.10.3077 (2003)
+
+
+
+
+Version 3.0
+Aug 16 2009
+
+Release Notes
+
+1. Input class (centralized substring state) is no longer part of the library.
+2. Substring classes re-implemented to support distributed state.
+3. Major documentation overhaul.
+4. Multiple 64-bit compatibility updates.
+5. Sample code updates.
+6. Small bug fixes.
+
+
+
+Version 3.01
+
+Aug 22 2009
+
+Release Notes
+
+1.  New features:
+    begin(R) - positive lookahead assertion added:
+        cttl/xtl_metaphor.h
+        cttl/xtl_op_impl.h
+        cttl/policy.h
+
+2.  Bug fixes:
+        example/cpp_comment.h - bug fixed to exclude newline at the tail of //comment.
+        lambda/xst_edge_translator.h - version update
+
+3.  New and revised sample programs:
+        example/lambda/syntax/node_edge/node_token_boundary.cpp - new lambda sample added.
+        example/lambda/misc/balanced_output.cpp - code revision and documentation update.
+        example/lambda/xml/xml_lexer.h - a few code revisions.
+
+
+_igor
+Igor Kholodov
+cttl@users.sourceforge.net
